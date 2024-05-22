@@ -9,6 +9,9 @@ use App\Notifications\PostTelegramNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use mysql_xdevapi\Exception;
+use NotificationChannels\Telegram\Exceptions\CouldNotSendNotification;
+
 class PostController extends Controller
 {
 
@@ -49,8 +52,17 @@ class PostController extends Controller
         $users = User::query()->where('notification_allowed',true)->get();
         $link = (url('/')) . '/posts/' . DB::table('posts')->latest('created_at')->first()->id;
 
-        Notification::send($users,new PostTelegramNotification($post,$link));
+        try {
+            Notification::send($users,new PostTelegramNotification($post,$link));
+        }catch (CouldNotSendNotification $exception){
+
+        }
+
+        try {
         Notification::send($users,new PostMailNotification($post,$link));
+        }catch (CouldNotSendNotification $exception){
+
+        }
 
 
 

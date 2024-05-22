@@ -9,11 +9,11 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
 
-class PostTelegramNotification extends Notification
+class PostTelegramNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private Post $post;
+    private mixed $post;
     private string $link;
     /**
      * Create a new notification instance.

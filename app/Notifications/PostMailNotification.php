@@ -8,16 +8,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PostMailNotification extends Notification
+class PostMailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    private Post $post;
+    private mixed $post;
     private string $link;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Post $post,string $link)
+    public function __construct(mixed $post,string $link)
     {
         $this->post=$post;
         $this->link=$link;
